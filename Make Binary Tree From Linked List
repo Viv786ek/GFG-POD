@@ -1,0 +1,43 @@
+TreeNode* form(TreeNode*root,int level , int maxi, unordered_map<int,vector<int> >&mp){
+    if(level>maxi || mp[level].empty()){
+       
+         return NULL;
+       
+    }
+    root=new TreeNode(mp[level][0]);
+    mp[level].erase(mp[level].begin(), mp[level].begin() +1);
+    root->left=form(root,level+1,maxi,mp);
+    root->right=form(root,level+1,maxi,mp);
+    return root;
+    
+}
+void convert(Node *head, TreeNode *&root) {
+    // Your code here
+    unordered_map<int,vector<int> >mp;
+    Node* t=head;
+    int level=0;
+    int extend=1;
+    int sze=0;
+    while(t){
+        int cnt=0;
+        Node * temp=t;
+        while(temp && cnt<extend){
+            mp[level].push_back(temp->data);
+            temp=temp->next;
+            cnt++;
+            sze++;
+        }
+        t=temp;
+        level++;
+        extend*=2;
+    }
+    // cout<<"j="<<sze<<" ";
+    
+    TreeNode* a=form(root,0,log2(sze),mp);
+    root=a;
+    // inorderTraversal(a);
+    
+    // root=a;
+    
+}
+
